@@ -8,19 +8,24 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   WalletOutlined,
   InboxOutlined,
-  SettingOutlined,
+  TeamOutlined,
   HomeOutlined,
 } from '@ant-design/icons';
-const drawerWidth = 240;
+const drawerWidth = 260;
 
 const { SubMenu } = Menu;
 
 const useStyles = makeStyles((theme) => ({
+  container: {
+    display: 'flex',
+  },
   root: {
     display: 'flex',
   },
@@ -59,15 +64,29 @@ const useStyles = makeStyles((theme) => ({
       color: '#000',
     },
   },
+  title: {
+    color: '#fff',
+    fontWeight: 600,
+  },
+  option: {
+    fontSize: '1.1rem',
+  },
+  icon: {
+    fontSize: '1.1rem !important',
+  },
+  addIcon: {
+    fontSize: '2rem',
+    color: 'white',
+  },
 }));
 
-const DrawerSide = ({ title, ...props }) => {
+const DrawerSide = ({ title, showCreate = true, ...props }) => {
   const { window } = props;
   const classes = useStyles();
-
+  const history = useHistory();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  const location = useLocation();
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -82,28 +101,43 @@ const DrawerSide = ({ title, ...props }) => {
         mode="inline"
       >
         <Menu.Item>
-          <Link to="/home">
-            <Menu.Item key="1" icon={<HomeOutlined />}>
+          <Link to="/home" className={classes.option}>
+            <Menu.Item key="1" icon={<HomeOutlined className={classes.icon} />}>
               Dashboard
             </Menu.Item>
           </Link>
         </Menu.Item>
-        <SubMenu key="sub2" icon={<InboxOutlined />} title="Almacen">
-          <Menu.Item>
-            <Link to="/almacen">
-              <Menu.Item key="2">Total de paquetes</Menu.Item>
-            </Link>
+        <SubMenu
+          key="sub2"
+          icon={<InboxOutlined className={classes.icon} />}
+          title="Almacen"
+          className={classes.option}
+        >
+          <Menu.Item key="2">
+            <Link to="/paquetes">Total de paquetes</Link>
           </Menu.Item>
-          <Menu.Item key="3">Paquetes enviados</Menu.Item>
-          <Menu.Item key="4">Paquetes en almacen</Menu.Item>
+          <Menu.Item key="3">
+            <Link to="/paquetes/enviados">Paquetes enviados</Link>
+          </Menu.Item>
+          <Menu.Item key="4">
+            <Link to="/paquetes/almacen">Paquetes en almacen</Link>
+          </Menu.Item>
         </SubMenu>
-        <SubMenu key="sub4" icon={<SettingOutlined />} title="Clientes">
+        <SubMenu
+          key="sub4"
+          icon={<TeamOutlined className={classes.icon} />}
+          title="Clientes"
+          className={classes.option}
+        >
           <Menu.Item key="9">Remitente</Menu.Item>
           <Menu.Item key="10">Destinatario</Menu.Item>
         </SubMenu>
-        <Menu.Item>
+        <Menu.Item className={classes.option}>
           <Link to="/facturas">
-            <Menu.Item key="11" icon={<WalletOutlined />}>
+            <Menu.Item
+              key="11"
+              icon={<WalletOutlined className={classes.icon} />}
+            >
               Facturas
             </Menu.Item>
           </Link>
@@ -116,7 +150,7 @@ const DrawerSide = ({ title, ...props }) => {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <div>
+    <div className={classes.container}>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
@@ -129,8 +163,16 @@ const DrawerSide = ({ title, ...props }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap className={classes.title}>
             {title}
+            {showCreate ? (
+              <IconButton aria-label="add">
+                <AddIcon
+                  className={classes.addIcon}
+                  onClick={() => history.push(`${location.pathname}/create`)}
+                />
+              </IconButton>
+            ) : null}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -146,7 +188,7 @@ const DrawerSide = ({ title, ...props }) => {
               paper: classes.drawerPaper,
             }}
             ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
+              keepMounted: true,
             }}
           >
             {drawer}

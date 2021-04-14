@@ -20,15 +20,21 @@ function Home() {
 
   return (
     <div className={classes.root}>
-      <DrawerSide title="Dashboard" />
+      <DrawerSide title="Dashboard" showCreate={false} />
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Box display="flex" flexBasis="33.3333%" flexWrap="wrap">
-          <CardDashboard cantidad="999,999" title="Almacen 1" />
-          <CardDashboard cantidad="999,999" title="Almacen 2" />
-          <CardDashboard cantidad="999,999" title="Almacen 3" />
-          <CardDashboard cantidad="999,999" title="Almacen 4" />
-          <CardDashboard cantidad="999,999" title="Almacen 5" />
+          <CardDashboard
+            cantidad="999,999"
+            title="Paquetes en almacen de origen"
+          />
+          <CardDashboard cantidad="999,999" title="Paquetes en línea aérea" />
+          <CardDashboard cantidad="999,999" title="Paquetes entregados" />
+          <CardDashboard cantidad="999,999" title="Paquetes en Aduanas" />
+          <CardDashboard
+            cantidad="999,999"
+            title="Paquetes en almacén principal"
+          />
         </Box>
       </main>
     </div>
