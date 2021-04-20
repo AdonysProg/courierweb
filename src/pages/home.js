@@ -3,7 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import CardDashboard from '../components/CardDashboard';
 import Box from '@material-ui/core/Box';
 import DrawerSide from '../components/DrawerSide';
-
+import CourierSvg from '../assets/icons/courier.svg';
+import axios from 'axios';
+import { SvgIcon } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -17,6 +19,16 @@ const useStyles = makeStyles((theme) => ({
 
 function Home() {
   const classes = useStyles();
+  const [data, setData] = React.useState();
+  const fetchData = React.useCallback(async () => {
+    await axios
+      .get('http://localhost:3000/api/paquetes/contador')
+      .then((response) => setData(response.data));
+  }, []);
+
+  React.useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return (
     <div className={classes.root}>
@@ -24,18 +36,33 @@ function Home() {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Box display="flex" flexBasis="33.3333%" flexWrap="wrap">
-          <CardDashboard
-            cantidad="999,999"
-            title="Paquetes en almacen de origen"
-          />
-          <CardDashboard cantidad="999,999" title="Paquetes en línea aérea" />
-          <CardDashboard cantidad="999,999" title="Paquetes entregados" />
-          <CardDashboard cantidad="999,999" title="Paquetes en Aduanas" />
-          <CardDashboard
-            cantidad="999,999"
-            title="Paquetes en almacén principal"
-          />
+          {data ? (
+            <>
+              <CardDashboard
+                cantidad={data.almacenOrigen.cantidad}
+                title="Paquetes en almacen de origen"
+              />
+              <CardDashboard
+                cantidad={data.almacenLineaAerea.cantidad}
+                title="Paquetes en línea aérea"
+              />
+              <CardDashboard
+                cantidad={data.almacenEnviados.cantidad}
+                title="Paquetes entregados"
+              />
+              <CardDashboard
+                cantidad={data.almacenAduanas.cantidad}
+                title="Paquetes en Aduanas"
+              />
+              <CardDashboard
+                cantidad={data.almacenPrincipal.cantidad}
+                title="Paquetes en almacén principal"
+              />
+            </>
+          ) : null}
         </Box>
+        <SvgIcon />
+        <img src={CourierSvg} alt="Courier Image" />
       </main>
     </div>
   );

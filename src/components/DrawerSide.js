@@ -52,6 +52,13 @@ const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
+    justifyContent: 'center',
+    backgroundColor: '#eee',
+  },
+  separador: {
+    width: '260px',
+    height: '5px',
+    backgroundColor: '#FA0000',
   },
   content: {
     flexGrow: 1,
@@ -69,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
   },
   option: {
-    fontSize: '1.1rem',
+    fontSize: '1.5rem',
   },
   icon: {
     fontSize: '1.1rem !important',
@@ -107,6 +114,7 @@ const DrawerSide = ({ title, showCreate = true, ...props }) => {
             </Menu.Item>
           </Link>
         </Menu.Item>
+        <div className={classes.separador} />
         <SubMenu
           key="sub2"
           icon={<InboxOutlined className={classes.icon} />}
@@ -123,15 +131,23 @@ const DrawerSide = ({ title, showCreate = true, ...props }) => {
             <Link to="/paquetes/almacen">Paquetes en almacen</Link>
           </Menu.Item>
         </SubMenu>
+        <div className={classes.separador} />
         <SubMenu
           key="sub4"
           icon={<TeamOutlined className={classes.icon} />}
           title="Clientes"
           className={classes.option}
         >
-          <Menu.Item key="9">Remitente</Menu.Item>
-          <Menu.Item key="10">Destinatario</Menu.Item>
+          <Menu.Item key="9">
+            <Link to="/remitente">Remitente</Link>
+          </Menu.Item>
+
+          <Menu.Item key="10">
+            <Link to="/destinatario">Destinatario</Link>
+          </Menu.Item>
         </SubMenu>
+        <div className={classes.separador} />
+
         <Menu.Item className={classes.option}>
           <Link to="/facturas">
             <Menu.Item

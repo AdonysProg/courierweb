@@ -11,6 +11,9 @@ import {
   TableCell,
   TableHead,
 } from '@material-ui/core';
+import moment from 'moment';
+import axios from 'axios';
+import FacturaRow from '../../components/FacturaRow';
 
 const useStyles = makeStyles((theme) => ({
   head: {
@@ -37,26 +40,36 @@ const useStyles = makeStyles((theme) => ({
 
 const Facturas = () => {
   const classes = useStyles();
-  const data = [
-    {
-      id: '123',
-      fecha: 'pepe',
-      destinatario: '123',
-      total: '123',
-    },
-  ];
+  const [data, setData] = React.useState([]);
+
+  const fetchData = React.useCallback(async () => {
+    await axios
+      .get('http://localhost:3000/api/factura')
+      .then((response) => setData(response.data))
+      .catch((err) => console.log(err));
+  }, []);
+
+  React.useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const cancelFactura = async (id) => {
+    await axios
+      .put(`http://localhost:3000/api/factura/${id}`)
+      .then(() => fetchData());
+  };
 
   return (
     <>
       <div>
-        <DrawerSide title="Facturas" />
+        <DrawerSide title="Facturas" showCreate={false} />
       </div>
       <div className={classes.content}>
         <TableContainer component={Paper}>
           <Table className={classes.table}>
             <TableHead className={classes.head}>
               <TableRow>
-                <TableCell className={classes.cell}>ID</TableCell>
+                <TableCell />
                 <TableCell align="center" className={classes.cell}>
                   Fecha
                 </TableCell>
@@ -66,18 +79,16 @@ const Facturas = () => {
                 <TableCell align="center" className={classes.cell}>
                   Total
                 </TableCell>
+                <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
               {data.map((row) => (
-                <TableRow className={classes.row}>
-                  <TableCell component="th" scope="row">
-                    {row.id}
-                  </TableCell>
-                  <TableCell align="center">{row.fecha}</TableCell>
-                  <TableCell align="center">{row.destinatario}</TableCell>
-                  <TableCell align="center">{row.total}</TableCell>
-                </TableRow>
+                <FacturaRow
+                  row={row}
+                  classes={classes}
+                  onCancel={cancelFactura}
+                />
               ))}
             </TableBody>
           </Table>
@@ -88,33 +99,3 @@ const Facturas = () => {
 };
 
 export default Facturas;
-
-// <>
-//   <DrawerSide title="Facturas" />
-//   <div className={classes.content}>
-//     <TableContainer component={Paper}>
-//       <Table className={classes.table} aria-label="customized table">
-//         <TableHead>
-//           <TableRow>
-//             <TableCell>ID</TableCell>
-//             <TableCell align="right">Fecha</TableCell>
-//             <TableCell align="right">Destinatario</TableCell>
-//             <TableCell align="right">Total</TableCell>
-//           </TableRow>
-//         </TableHead>
-//         <TableBody>
-//           {rows.map((row) => (
-//             <TableRow key={row.id}>
-//               <TableCell component="th" scope="row">
-//                 {row.id}
-//               </TableCell>
-//               <TableCell align="right">{row.fecha}</TableCell>
-//               <TableCell align="right">{row.destinatario}</TableCell>
-//               <TableCell align="right">{row.total}</TableCell>
-//             </TableRow>
-//           ))}
-//         </TableBody>
-//       </Table>
-//     </TableContainer>
-//   </div>
-// </>

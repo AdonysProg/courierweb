@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
+
 import DrawerSide from '../../components/DrawerSide';
 import {
   Table,
@@ -11,7 +11,8 @@ import {
   TableCell,
   TableHead,
 } from '@material-ui/core';
-import PaqueteRow from '../../components/PaqueteRow';
+import ClienteRow from '../../components/ClienteRow';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   head: {
@@ -36,56 +37,57 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PaquetesEnviados = () => {
+const Remitente = () => {
   const classes = useStyles();
-  const [data, setData] = React.useState([]);
 
+  const [data, setData] = React.useState([]);
   const fetchData = React.useCallback(async () => {
     await axios
-      .get('http://localhost:3000/api/paquetes/tipo/Enviado')
+      .get('http://localhost:3000/api/remitente')
       .then((response) => setData(response.data))
       .catch((err) => console.log(err));
   }, []);
 
+  const deleteCliente = async (id) => {
+    await axios
+      .delete(`http://localhost:3000/api/remitente/${id}`)
+      .then(() => fetchData());
+  };
+
   React.useEffect(() => {
     fetchData();
   }, [fetchData]);
+
   return (
     <>
       <div>
-        <DrawerSide title="Paquetes Enviados" arial="paquetes" />
+        <DrawerSide title="Remitente" arial="remitente" />
       </div>
       <div className={classes.content}>
         <TableContainer component={Paper}>
           <Table className={classes.table}>
             <TableHead className={classes.head}>
               <TableRow>
-                <TableCell />
+                <TableCell></TableCell>
                 <TableCell align="center" className={classes.cell}>
                   Nombre
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
-                  Descripción
+                  RNC
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
-                  Remitente
+                  Email
                 </TableCell>
-                <TableCell align="center" className={classes.cell}>
-                  Destinatario
-                </TableCell>
-                <TableCell align="center" className={classes.cell}>
-                  Costo de envío
-                </TableCell>
-                <TableCell />
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data.map((row) => (
-                <PaqueteRow
+                <ClienteRow
                   row={row}
-                  type="paquetes"
                   classes={classes}
-                  onDelete={() => console.log}
+                  onDelete={deleteCliente}
+                  type="remitente"
                 />
               ))}
             </TableBody>
@@ -96,4 +98,4 @@ const PaquetesEnviados = () => {
   );
 };
 
-export default PaquetesEnviados;
+export default Remitente;

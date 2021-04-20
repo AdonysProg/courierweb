@@ -11,6 +11,8 @@ import {
   TableCell,
   TableHead,
 } from '@material-ui/core';
+import axios from 'axios';
+import PaqueteRow from '../../components/PaqueteRow';
 
 const useStyles = makeStyles((theme) => ({
   head: {
@@ -37,35 +39,24 @@ const useStyles = makeStyles((theme) => ({
 
 const Paquetes = () => {
   const classes = useStyles();
-  const data = [
-    {
-      id: '123',
-      nombre: 'pepe',
-      descripcion: '123',
-      remitente: '123',
-      destinatario: '123',
-      direccion: '123',
-      costo: '123',
-    },
-    {
-      id: '123',
-      nombre: 'pepe',
-      descripcion: '123',
-      remitente: '123',
-      destinatario: '123',
-      direccion: '123',
-      costo: '123',
-    },
-    {
-      id: '123',
-      nombre: 'pepe',
-      descripcion: '123',
-      remitente: '123',
-      destinatario: '123',
-      direccion: '123',
-      costo: '123',
-    },
-  ];
+  const [data, setData] = React.useState([]);
+  const [reload, setReload] = React.useState(false);
+
+  const fetchData = React.useCallback(async () => {
+    await axios
+      .get('http://localhost:3000/api/paquetes/tipo/Almacen')
+      .then((response) => setData(response.data))
+      .catch((err) => console.log(err));
+  }, []);
+
+  const onDelete = async (id) => {
+    await axios.delete(`http://localhost:3000/api/paquetes/${id}`);
+    setReload(true);
+  };
+
+  React.useEffect(() => {
+    fetchData();
+  }, [fetchData, reload]);
 
   return (
     <>
@@ -77,9 +68,7 @@ const Paquetes = () => {
           <Table className={classes.table}>
             <TableHead className={classes.head}>
               <TableRow>
-                <TableCell align="center" className={classes.cell}>
-                  ID
-                </TableCell>
+                <TableCell />
                 <TableCell align="center" className={classes.cell}>
                   Nombre
                 </TableCell>
@@ -93,24 +82,19 @@ const Paquetes = () => {
                   Destinatario
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
-                  Dirección - Destinatario
-                </TableCell>
-                <TableCell align="center" className={classes.cell}>
                   Costo de envío
                 </TableCell>
+                <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
               {data.map((row) => (
-                <TableRow className={classes.row}>
-                  <TableCell align="center">{row.id}</TableCell>
-                  <TableCell align="center">{row.nombre}</TableCell>
-                  <TableCell align="center">{row.descripcion}</TableCell>
-                  <TableCell align="center">{row.remitente}</TableCell>
-                  <TableCell align="center">{row.destinatario}</TableCell>
-                  <TableCell align="center">{row.direccion}</TableCell>
-                  <TableCell align="center">{row.costo}</TableCell>
-                </TableRow>
+                <PaqueteRow
+                  row={row}
+                  classes={classes}
+                  type="paquetes"
+                  onDelete={onDelete}
+                />
               ))}
             </TableBody>
           </Table>
