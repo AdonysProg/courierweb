@@ -136,7 +136,12 @@ function CreateRemitente() {
             <Button type="submit" className={classes.guardarBtn}>
               Guardar
             </Button>
-            <Button className={classes.guardarBtn}>Cancelar</Button>
+            <Button
+              className={classes.guardarBtn}
+              onClick={() => history.push('/remitente')}
+            >
+              Cancelar
+            </Button>
           </Box>
         </form>
       </main>

@@ -274,7 +274,12 @@ function EditarPaquete() {
                 <Button type="submit" className={classes.guardarBtn}>
                   Guardar
                 </Button>
-                <Button className={classes.guardarBtn}>Cancelar</Button>
+                <Button
+                  className={classes.guardarBtn}
+                  onClick={() => history.push('/paquetes')}
+                >
+                  Cancelar
+                </Button>
               </Box>
             </>
           ) : null}

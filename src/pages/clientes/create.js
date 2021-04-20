@@ -136,7 +136,12 @@ function CreateDestinatario() {
             <Button type="submit" className={classes.guardarBtn}>
               Guardar
             </Button>
-            <Button className={classes.guardarBtn}>Cancelar</Button>
+            <Button
+              className={classes.guardarBtn}
+              onClick={() => history.push('/destinatario')}
+            >
+              Cancelar
+            </Button>
           </Box>
         </form>
       </main>
