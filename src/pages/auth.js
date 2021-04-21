@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
 import { useCookies } from 'react-cookie';
+import LoginSvg from '../assets/icons/login.svg';
 
 const useStyles = makeStyles({
   container: {
@@ -73,6 +74,7 @@ const Auth = () => {
           <RegisterForm classes={classes} onRegister={onRegister} />
         )}
       </Grid>
+      <img src={LoginSvg} alt="Courier Image" width="450" height="450" />
     </Grid>
   );
 };
