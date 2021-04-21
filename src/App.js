@@ -14,81 +14,61 @@ import EditRemitente from './pages/clientes/editRemitente';
 import Remitente from './pages/clientes/remitente';
 import CreateRemitente from './pages/clientes/createRemitente';
 import EditarPaquete from './pages/paquetes/edit';
+import Auth from './pages/auth';
+import RutaPrivada from './components/RutaPrivada';
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Switch>
-          <Route path="/home">
-            <Home />
-          </Route>
-        </Switch>
-        <Switch>
-          <Route path="/paquetes" exact>
-            <Paquetes />
-          </Route>
-        </Switch>
-        <Switch>
-          <Route path="/paquetes/almacen" exact>
-            <Almacen />
-          </Route>
-        </Switch>
-        <Switch>
-          <Route path="/paquetes/enviados" exact>
-            <PaquetesEnviados />
-          </Route>
-        </Switch>
-        <Switch>
-          <Route
+          <RutaPrivada path="/home" component={Home} />
+          <RutaPrivada path="/paquetes" component={Paquetes} exact />
+          <RutaPrivada path="/paquetes/almacen" exact component={Almacen} />
+          <RutaPrivada
+            path="/paquetes/enviados"
+            exact
+            component={PaquetesEnviados}
+          />
+          <RutaPrivada
             path={[
               '/paquetes/create',
               '/paquetes/enviados/create',
               '/paquetes/almacen/create',
             ]}
             exact
-          >
-            <PaqueteCreate />
-          </Route>
-        </Switch>
-        <Switch>
-          <Route path="/facturas" exact>
-            <Facturas />
-          </Route>
-        </Switch>
-        <Switch>
-          <Route path="/destinatario" exact>
-            <Destinatario />
-          </Route>
-        </Switch>
-        <Switch>
-          <Route path="/destinatario/create" exact>
-            <CreateDestinatario />
-          </Route>
-        </Switch>
-        <Switch>
-          <Route path="/destinatario/edit/:id" exact>
-            <EditDestinatario />
-          </Route>
-        </Switch>
-        <Switch>
-          <Route path="/remitente/create" exact>
-            <CreateRemitente />
-          </Route>
-        </Switch>
-        <Switch>
-          <Route path="/remitente" exact>
-            <Remitente />
-          </Route>
-        </Switch>
-        <Switch>
-          <Route path="/remitente/edit/:id" exact>
-            <EditRemitente />
-          </Route>
-        </Switch>
-        <Switch>
-          <Route path="/paquetes/edit/:id" exact>
-            <EditarPaquete />
+            component={PaqueteCreate}
+          />
+          <RutaPrivada path="/facturas" exact component={Facturas} />
+          <RutaPrivada path="/destinatario" exact component={Destinatario} />
+          <RutaPrivada
+            path="/destinatario/create"
+            exact
+            component={CreateDestinatario}
+          />
+          <RutaPrivada
+            path="/destinatario/edit/:id"
+            exact
+            component={EditDestinatario}
+          />
+          <RutaPrivada
+            path="/remitente/create"
+            exact
+            component={CreateRemitente}
+          />
+          <RutaPrivada path="/remitente" exact component={Remitente} />
+          <RutaPrivada
+            path="/remitente/edit/:id"
+            exact
+            component={EditRemitente}
+          />
+          <RutaPrivada
+            path="/paquetes/edit/:id"
+            exact
+            component={EditarPaquete}
+          />
+          <Route path="/" exact>
+            <Auth />
           </Route>
         </Switch>
       </Router>

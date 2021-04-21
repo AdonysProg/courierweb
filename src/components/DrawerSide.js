@@ -9,6 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
+import { useCookies, Cookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -18,6 +19,7 @@ import {
   TeamOutlined,
   HomeOutlined,
 } from '@ant-design/icons';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 const drawerWidth = 260;
 
 const { SubMenu } = Menu;
@@ -97,7 +99,7 @@ const DrawerSide = ({ title, showCreate = true, ...props }) => {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
+  const cookie = new Cookies();
   const drawer = (
     <div>
       <Menu
@@ -155,6 +157,20 @@ const DrawerSide = ({ title, showCreate = true, ...props }) => {
               icon={<WalletOutlined className={classes.icon} />}
             >
               Facturas
+            </Menu.Item>
+          </Link>
+        </Menu.Item>
+        <Menu.Item
+          className={classes.option}
+          onClick={() => cookie.remove('sesion')}
+        >
+          <Link to="/">
+            <Menu.Item
+              key="12"
+              icon={<ExitToAppIcon className={classes.icon} />}
+            >
+              {' '}
+              Log out
             </Menu.Item>
           </Link>
         </Menu.Item>
